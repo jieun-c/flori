@@ -1,28 +1,16 @@
-import {
-  getDatabase,
-  ref,
-  set,
-  onValue,
-  child,
-  get,
-  push,
-  update,
-  remove,
-} from "firebase/database";
+import { getDatabase, ref, set, child, get, push, update, remove } from "firebase/database";
 
 export const writeDB = ({ url, slash, params, body }: any) => {
   const db = getDatabase();
   set(ref(db, `${url}/${slash}`), params);
-
-  return null;
 };
 
 export const readDB = ({ url, slash, params, body }: any) => {
   const dbRef = ref(getDatabase());
-  get(child(dbRef, `${url}/${slash}`))
+  const result = get(child(dbRef, `${url}`))
     .then((snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
+        return snapshot.val();
       } else {
         console.log("No data available");
       }
@@ -30,6 +18,8 @@ export const readDB = ({ url, slash, params, body }: any) => {
     .catch((error) => {
       console.error(error);
     });
+
+  return result;
 };
 
 export const updateDB = ({ url, slash, params, body }: any) => {
