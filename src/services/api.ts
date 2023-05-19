@@ -1,4 +1,4 @@
-import { ref, set, get, push, update, remove } from "firebase/database";
+import { ref, set, get, remove } from "firebase/database";
 import { database } from "../firebase.config";
 
 export const writeDB = async (path: string, body: any) => {
@@ -42,6 +42,6 @@ export const updateDB = async (path: string, newData: object) => {
   return null;
 };
 
-// export const deleteDB = ({ url, slash, params, body }: any) => {
-//   return remove(url);
-// };
+export const deleteDB = async (path: string, newData: object) => {
+  await updateDB(path, newData);
+};

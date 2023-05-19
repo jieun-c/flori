@@ -43,6 +43,12 @@ const ProductDetail = () => {
         productId: product?.productId,
         count: 1,
         option,
+        imageUrl: product?.images[0].url,
+        brandName: product?.brandName,
+        productName: product?.name,
+        originPrice: product?.originPrice,
+        price: product?.price,
+        discount: product?.discount,
       } as ICart;
       writeDB("/carts", save);
     } else {

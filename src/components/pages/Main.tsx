@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import GridLayout from "../organism/GridLayout";
-import { IProduct } from "../../@type";
 import { onValue, ref } from "firebase/database";
 import { database } from "../../firebase.config";
+import { useRecoilState } from "recoil";
+import { productsAtom } from "../../store";
 
 const Main = () => {
-  const [products, setProducts] = useState<IProduct[]>([]);
+  const [products, setProducts] = useRecoilState(productsAtom);
 
   useEffect(() => {
     const productRef = ref(database, `products`);
@@ -27,7 +28,11 @@ const Main = () => {
 
       {/* Grid */}
       <div className="max-w-5xl p-1 m-auto">
-        <GridLayout datas={products} />
+        {products.length === 0 ? (
+          <p className="text-xs">등록된 상품이 없습니다.</p>
+        ) : (
+          <GridLayout datas={products} />
+        )}
       </div>
     </>
   );

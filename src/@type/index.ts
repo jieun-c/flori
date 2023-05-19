@@ -52,4 +52,10 @@ export interface ICart {
   productId: string;
   count: number;
   option: string;
+  imageUrl: string;
+  brandName: string;
+  productName: string;
+  originPrice: number;
+  price: number;
+  discount: number;
 }

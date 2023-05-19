@@ -7,7 +7,6 @@ const GridLayout = ({ datas }: { datas: IProduct[] }) => {
       {datas?.map((data: IProduct) => (
         <Card key={data.productId} data={data} />
       ))}
-      {!datas && <p className="text-xs">상품을 등록해주세요.</p>}
     </div>
   );
 };

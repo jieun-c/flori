@@ -2,15 +2,18 @@ import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { currentUserAtom } from "../../store";
 import { signInWithPopup, signOut } from "firebase/auth";
-import { auth, googleProvider } from "../../firebase.config";
+import { auth, database, googleProvider } from "../../firebase.config";
 import { USER_ROLES } from "../../@type";
 import { CiShoppingCart, CiEdit, CiLogin, CiLogout, CiUser } from "react-icons/ci";
 import AvatarBadge from "../molecule/AvatarBadge";
 import NavList from "../molecule/NavList";
 import Logo from "../Atom/Logo";
+import { useEffect, useState } from "react";
+import { onValue, ref } from "firebase/database";
 
 const Header = ({ height }: { height: string }) => {
   const currentUser = useRecoilValue(currentUserAtom);
+  const [isCart, setIsCart] = useState(false);
 
   const login = async () => {
     await signInWithPopup(auth, googleProvider);
@@ -28,6 +31,16 @@ const Header = ({ height }: { height: string }) => {
         console.log(error);
       });
   };
+
+  useEffect(() => {
+    const cartRef = ref(database, `carts`);
+
+    const unsubscribe = onValue(cartRef, (data: any) => {
+      setIsCart(data.exists());
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <header className={`bg-white w-full fixed z-10 ${height}`}>
@@ -52,11 +65,11 @@ const Header = ({ height }: { height: string }) => {
           )}
 
           {/* User Management */}
-          {currentUser?.role === USER_ROLES.ADMIN && (
+          {/* {currentUser?.role === USER_ROLES.ADMIN && (
             <Link to="/admin/user">
               <CiUser size={25} title="사용자 목록" />
             </Link>
-          )}
+          )} */}
 
           {/* Create Product */}
           {(currentUser?.role === USER_ROLES.SELLER || currentUser?.role === USER_ROLES.ADMIN) && (
@@ -71,8 +84,15 @@ const Header = ({ height }: { height: string }) => {
             onClick={() => {
               if (!currentUser) alert("로그인 후 장바구니 사용이 가능합니다.");
             }}
+            className="relative"
           >
             <CiShoppingCart size={25} title="장바구니" />
+            {isCart && currentUser && (
+              <span className="absolute flex h-3 w-3 top-[-5px] right-[5px]">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-400"></span>
+              </span>
+            )}
           </Link>
 
           {/* Login / Logout */}
