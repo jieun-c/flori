@@ -1,9 +1,11 @@
+import { IProduct } from "../../@type";
 import useNav from "../../hooks/useNav";
 import Image34 from "../Atom/Image34";
 import Price from "../Atom/Price";
 
-const Card = () => {
-  const { navFn } = useNav("/products/123", { id: "123" });
+const Card = ({ data }: { data: IProduct }) => {
+  const { navFn } = useNav(`/products/${data.productId}`, { state: data });
+  const { brandName, name, images, discount, originPrice, price } = data;
 
   return (
     <>
@@ -13,18 +15,16 @@ const Card = () => {
         onClick={navFn}
       >
         {/* Product Image - 3:4 */}
-        <Image34 src="/images/banners/1.jpg" alt="1.webp" />
+        <Image34 src={images[0].url} alt={name} />
 
         {/* Product Info */}
         <div className="p-1">
           <span className="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold truncate ...">
-            Flori
+            {brandName}
           </span>
-          <p className="text-sm font-bold truncate ... mt-2 mb-4">
-            솔리드 텍스쳐 스퀘어넥 미디 원피스
-          </p>
+          <p className="text-sm font-bold truncate ... mt-2 mb-4">{name}</p>
 
-          <Price />
+          <Price discount={discount} originPrice={originPrice} price={price} />
         </div>
       </div>
     </>

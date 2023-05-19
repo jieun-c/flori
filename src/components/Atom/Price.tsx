@@ -1,18 +1,18 @@
 import React from "react";
 
-const Price = ({ isDiscount = true, discountRate = 0, price = 0 }) => {
+const Price = ({ discount = 0, originPrice = 0, price = 0 }) => {
   return (
     <>
-      {isDiscount ? (
+      {discount !== 0 ? (
         <>
-          <p className="text-xs text-slate-500 line-through">₩ 33000</p>
+          <p className="text-xs text-slate-500 line-through">₩ {originPrice}</p>
           <div className="flex justify-between items-center">
-            <p className="text-md text-red-500">₩ 30000</p>
-            <p className="text-sm text-red-500">10%</p>
+            <p className="text-md text-red-500">₩ {price}</p>
+            <p className="text-sm text-red-500">{discount}%</p>
           </div>
         </>
       ) : (
-        <p className="text-md">₩ 30000</p>
+        <p className="text-md pt-4">₩ {price}</p>
       )}
     </>
   );

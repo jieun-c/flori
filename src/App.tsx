@@ -61,6 +61,7 @@ const App = () => {
   useEffect(() => {
     setLoading(true);
 
+    // auth 정보가 변경될 때마다 실행
     const unsubscribe = onAuthStateChanged(auth, async (session: any) => {
       if (!session) {
         setCurrentUser(null);
@@ -68,25 +69,24 @@ const App = () => {
         return;
       }
 
-      const params = {
-        uid: session.uid,
-        displayName: session.displayName,
-        email: session.email,
-        photoURL: session.photoURL,
-        role: "customer",
-      } as IUser;
+      const users: IUser[] | null = await readDB("/users");
+      const user = users?.find((user: IUser) => user.uid === session.uid);
 
-      const readData = await readDB({ url: `/users/${session.uid}` });
+      if (!users || !user) {
+        // 회원가입
+        const save = {
+          uid: session.uid,
+          displayName: session.displayName,
+          email: session.email,
+          photoURL: session.photoURL,
+          role: USER_ROLES.CUSTOMER,
+        } as IUser;
 
-      if (!readData) {
-        writeDB({
-          url: "/users",
-          slash: session.uid,
-          params,
-        });
-        setCurrentUser({ ...params });
+        writeDB("/users", save);
+        setCurrentUser(save);
       } else {
-        setCurrentUser({ ...readData });
+        // 가입된 정보 반환
+        setCurrentUser({ ...user });
       }
       setLoading(false);
     });
