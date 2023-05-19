@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/flori/static/css/main.11815dff.css",
+    "main.js": "/flori/static/js/main.59fded77.js",
+    "static/media/2.jpg": "/flori/static/media/2.6b4fae8584ad2af9bf89.jpg",
+    "index.html": "/flori/index.html",
+    "main.11815dff.css.map": "/flori/static/css/main.11815dff.css.map",
+    "main.59fded77.js.map": "/flori/static/js/main.59fded77.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.11815dff.css",
+    "static/js/main.59fded77.js"
+  ]
+}
