@@ -33,24 +33,14 @@ export const readDB = async (path: string) => {
   return null;
 };
 
-// export const updateDB = ({ url, slash, params, body }: any) => {
-//   const db = getDatabase();
-
-//   // A post entry.
-//   const postData = body as object;
-
-//   // Get a key for a new Post.
-//   const newPostKey = push(child(ref(db), url)).key;
-
-//   console.log(newPostKey);
-
-//   // Write the new post's data simultaneously in the posts list and the user's post list.
-//   const updates = {
-//     [`/posts/${newPostKey}`]: postData,
-//   };
-
-//   return update(ref(db), updates);
-// };
+export const updateDB = async (path: string, newData: object) => {
+  try {
+    set(ref(database, `${path}`), newData);
+  } catch (error) {
+    console.log(error);
+  }
+  return null;
+};
 
 // export const deleteDB = ({ url, slash, params, body }: any) => {
 //   return remove(url);

@@ -33,7 +33,7 @@ export interface IProduct {
   originPrice: number;
   price: number;
   discount: number;
-  category: string; // 구분 필요
+  category: string;
   options: string[] | null;
   images: IImageInfo[];
   sellerId: string;
@@ -44,4 +44,12 @@ export interface IProduct {
 export interface IImageInfo {
   publicId: string;
   url: string;
+}
+
+export interface ICart {
+  cartId: string;
+  userId: string;
+  productId: string;
+  count: number;
+  option: string;
 }
