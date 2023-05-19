@@ -30,7 +30,7 @@ const ProductDetail = () => {
       return;
     }
 
-    const carts: ICart[] | null = await readDB("/carts");
+    const carts: ICart[] | null = await readDB(`/carts/${currentUser.uid}`);
     const cart = carts?.find(
       (cart: ICart) => cart.productId === product?.productId && cart.option === option
     );
@@ -50,13 +50,13 @@ const ProductDetail = () => {
         price: product?.price,
         discount: product?.discount,
       } as ICart;
-      writeDB("/carts", save);
+      writeDB(`/carts/${currentUser.uid}`, save);
     } else {
       // 수량 추가
       const idx = carts.findIndex((c: ICart) => c.cartId === cart.cartId);
       carts.splice(idx, 1, { ...cart, count: cart.count + 1 });
 
-      await updateDB("/carts", carts);
+      await updateDB(`/carts/${currentUser.uid}`, carts);
     }
     alert("장바구니에 추가 되었습니다.");
   };

@@ -4,16 +4,17 @@ import CartItem from "../molecule/CartItem";
 import { useEffect, useState } from "react";
 import { database } from "../../firebase.config";
 import { onValue, ref } from "firebase/database";
-import { useRecoilState } from "recoil";
-import { cartsAtom } from "../../store";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { cartsAtom, currentUserAtom } from "../../store";
 import { ICart } from "../../@type";
 
 const Cart = () => {
   const [carts, setCarts] = useRecoilState(cartsAtom);
   const [totalPrice, setTotalPrice] = useState(0);
+  const currentUser = useRecoilValue(currentUserAtom);
 
   useEffect(() => {
-    const cartRef = ref(database, `/carts`);
+    const cartRef = ref(database, `/carts/${currentUser?.uid}`);
 
     const unsubscribe = onValue(cartRef, (data: any) => {
       const valdata = data.val();

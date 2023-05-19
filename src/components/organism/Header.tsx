@@ -33,14 +33,14 @@ const Header = ({ height }: { height: string }) => {
   };
 
   useEffect(() => {
-    const cartRef = ref(database, `carts`);
+    const cartRef = ref(database, `/carts/${currentUser?.uid}`);
 
     const unsubscribe = onValue(cartRef, (data: any) => {
       setIsCart(data.exists());
     });
 
     return unsubscribe;
-  }, []);
+  }, [currentUser]);
 
   return (
     <header className={`bg-white w-full fixed z-10 ${height}`}>

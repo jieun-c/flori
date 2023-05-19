@@ -4,14 +4,18 @@ import Price from "../Atom/Price";
 import Quantity from "../Atom/Quantity";
 import { ICart } from "../../@type";
 import { deleteDB, updateDB } from "../../services/api";
+import { useRecoilValue } from "recoil";
+import { currentUserAtom } from "../../store";
 
 const CartItem = ({ carts, cart }: { carts: ICart[]; cart: ICart }) => {
+  const currentUser = useRecoilValue(currentUserAtom);
+
   const deleteCart = (cartId: string) => {
     const confirm = window.confirm("해당 상품을 삭제하시겠습니까?");
     if (!confirm) return;
 
     const filteredItem = carts.filter((c: ICart) => c.cartId !== cartId);
-    deleteDB("/carts", filteredItem);
+    deleteDB(`/carts/${currentUser?.uid}`, filteredItem);
     alert("삭제되었습니다.");
   };
 
@@ -23,7 +27,7 @@ const CartItem = ({ carts, cart }: { carts: ICart[]; cart: ICart }) => {
         return { ...c };
       }
     });
-    await updateDB("/carts", updateData);
+    await updateDB(`/carts/${currentUser?.uid}`, updateData);
   };
 
   const onDecrease = async () => {
@@ -34,7 +38,7 @@ const CartItem = ({ carts, cart }: { carts: ICart[]; cart: ICart }) => {
         return { ...c };
       }
     });
-    await updateDB("/carts", updateData);
+    await updateDB(`/carts/${currentUser?.uid}`, updateData);
   };
 
   return (
