@@ -15,48 +15,52 @@ import ProductDetail from "./components/pages/ProductDetail";
 import Cart from "./components/pages/Cart";
 import CreateProduct from "./components/pages/CreateProduct";
 import Users from "./components/pages/Users";
+import { basename } from "path";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useRecoilState(currentUserAtom);
   const [loading, setLoading] = useState(true);
 
-  const router = createBrowserRouter([
-    {
-      element: <MainLayout />,
-      errorElement: <NotFound />,
-      children: [
-        {
-          path: "/",
-          element: <Main />,
-        },
-        {
-          path: "/products",
-          element: <Products />,
-        },
-        {
-          path: "/products/:id",
-          element: <ProductDetail />,
-        },
-        {
-          path: "/cart",
-          element: currentUser ? <Cart /> : <Navigate to="/" />,
-        },
-        {
-          path: "/seller/product",
-          element:
-            currentUser?.role === USER_ROLES.SELLER || currentUser?.role === USER_ROLES.ADMIN ? (
-              <CreateProduct />
-            ) : (
-              <Navigate to="/" />
-            ),
-        },
-        {
-          path: "/admin/user",
-          element: currentUser?.role === USER_ROLES.ADMIN ? <Users /> : <Navigate to="/" />,
-        },
-      ],
-    },
-  ]);
+  const router = createBrowserRouter(
+    [
+      {
+        element: <MainLayout />,
+        errorElement: <NotFound />,
+        children: [
+          {
+            path: "/",
+            element: <Main />,
+          },
+          {
+            path: "/products",
+            element: <Products />,
+          },
+          {
+            path: "/products/:id",
+            element: <ProductDetail />,
+          },
+          {
+            path: "/cart",
+            element: currentUser ? <Cart /> : <Navigate to="/" />,
+          },
+          {
+            path: "/seller/product",
+            element:
+              currentUser?.role === USER_ROLES.SELLER || currentUser?.role === USER_ROLES.ADMIN ? (
+                <CreateProduct />
+              ) : (
+                <Navigate to="/" />
+              ),
+          },
+          {
+            path: "/admin/user",
+            element: currentUser?.role === USER_ROLES.ADMIN ? <Users /> : <Navigate to="/" />,
+          },
+        ],
+      },
+    ],
+    { basename: "/flori" }
+  );
 
   useEffect(() => {
     setLoading(true);
